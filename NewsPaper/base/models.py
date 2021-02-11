@@ -6,7 +6,7 @@ class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def update_rating(self):
-        self.rating = 3 * (int(Post.objects.get(author = self).rating))
+        self.rating = 3 * (int(Post.objects.filter(author = self).values('rating'))) + Comment.objects.filter(user = self.user).values('rating')
         #self.Comment.rating + self.Post.Comment.rating +
         return self.rating
 
@@ -34,7 +34,7 @@ class Post(models.Model):
     rating = models.IntegerField(default=0)
 
     def like(self):
-        self.rating += 1
+        self.rating = self.rating +1
         return self.rating
 
     def dislike(self):
@@ -42,7 +42,7 @@ class Post(models.Model):
         return self.rating
 
     def preview(self):
-        preview = str(self.text)[:124]
+        preview = str(self.text)[:124].replace('\n', '')
         return preview
 
 
