@@ -23,3 +23,13 @@ comment_1 = Comment.objects.create(post = post_1, user = user_1, text = 'МЕС�
 comment_2 =Comment.objects.create(post = post_1, user = user_2, text = 'МЕССИИИИииииииииии')
 comment_3 = Comment.objects.create(post = post_2 , user = user_1 , text =' Нам ХАНА')
 comment_4 = Comment.objects.create(post = post_3 , user = user_2 , text = 'Нееееет')
+comment_1.like()
+comment_2.dislike()
+comment_3.like()
+comment_4.dislike()
+post_1.like()
+post_2.dislike()
+post_3.like()
+comment_1.like()
+
+

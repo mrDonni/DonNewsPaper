@@ -2,11 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Author(models.Model):
-    rating = models.FloatField(default=0.0)
+    rating = models.IntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def update_rating(self):
-        self.rating = self.Post.rating*3 + self.Comment.rating + self.Post.Comment.rating
+        self.rating = 3 * (int(Post.objects.get(author = self).rating))
+        #self.Comment.rating + self.Post.Comment.rating +
         return self.rating
 
 class Category(models.Model):
@@ -30,14 +31,14 @@ class Post(models.Model):
     category = models.ManyToManyField(Category, through='PostCategory')
     name = models.CharField(max_length= 255)
     text = models.TextField()
-    rating = models.FloatField(default=0.0)
+    rating = models.IntegerField(default=0)
 
     def like(self):
-        self.rating = +1
+        self.rating += 1
         return self.rating
 
     def dislike(self):
-        self.rating = -1
+        self.rating -= 1
         return self.rating
 
     def preview(self):
@@ -54,14 +55,14 @@ class Comment(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     text= models.TextField()
     time_posted = models.DateTimeField(auto_now_add=True)
-    rating = models.FloatField(default=0.0)
+    rating = models.IntegerField(default=0)
 
     def like(self):
-        self.rating = +1
+        self.rating = self.rating +1
         return self.rating
 
     def dislike(self):
-        self.rating = -1
+        self.rating = self.rating -1
         return self.rating
 
 
