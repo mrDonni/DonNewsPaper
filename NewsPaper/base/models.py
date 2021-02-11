@@ -6,9 +6,18 @@ class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def update_rating(self):
-        self.rating = 3 * (int(Post.objects.filter(author = self).values('rating'))) + Comment.objects.filter(user = self.user).values('rating')
-        #self.Comment.rating + self.Post.Comment.rating +
+        posted = Post.objects.filter(author = self)
+        post_ratings = sum(i.rating for i in posted)
+        comment_ratings = sum(i.rating for i in Comment.objects.filter(user = self.user))
+        postcomment_ratings = 0
+        for j in posted:
+            for i in Comment.objects.filter(post=j):
+                postcomment_ratings += i.rating
+        self.rating = (3 * post_ratings) + comment_ratings + postcomment_ratings
+        self.save()
         return self.rating
+
+
 
 class Category(models.Model):
 
@@ -35,10 +44,13 @@ class Post(models.Model):
 
     def like(self):
         self.rating = self.rating +1
+        self.save()
         return self.rating
+
 
     def dislike(self):
         self.rating -= 1
+        self.save()
         return self.rating
 
     def preview(self):
@@ -59,10 +71,12 @@ class Comment(models.Model):
 
     def like(self):
         self.rating = self.rating +1
+        self.save()
         return self.rating
 
     def dislike(self):
         self.rating = self.rating -1
+        self.save()
         return self.rating
 
 
