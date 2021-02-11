@@ -46,8 +46,8 @@ class Post(models.Model):
 
 
 class PostCategory(models.Model):
-    post = models.OneToOneField(Post,on_delete=models.CASCADE)
-    category = models.OneToOneField(Category,on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    category = models.ForeignKey(Category,on_delete=models.CASCADE)
 
 class Comment(models.Model):
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
