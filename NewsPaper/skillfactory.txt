@@ -25,7 +25,6 @@ text ='\n'
 post_1.category.add(category_1)
 post_2 = Post.objects.create(type = 'PS', author = author_2 , name = 'Всем ХАНА' , text = 'В Германии Лошади научили хомячков курить ')
 post_2.category.add(category_2,category_4)
-Post.objects.all().values('name','category','author','time_posted','text')
 post_3 = Post.objects.create( author = author_2 , name = '1 сентября' , text = 'Школа открылась ')
 post_3.category.add(category_3)
 comment_1 = Comment.objects.create(post = post_1, user = user_1, text = 'МЕССИИИИ')
@@ -55,6 +54,15 @@ best_post = Post.objects.all().order_by('-rating')[0]
 print(f'Лучший автор {best.user.username}, с рейтингом {best.rating}')
 print(f'Лучшая статья - {best_post.name} , автор - {best_post.author.user.username}, дата добавлнения - {best_post.time_posted} , c рейтингом {best_post.rating}')
 best_post.preview()
+for j in Comment.objects.filter(post = best_post):
+     print(f'Комментарий "{j.text}", время добавления {j.time_posted}, пользователь {j.user.username} , рейтинг {j.rating}')
+
+print('!!!!!!!!!!!!Или как вариант!!!!!!!!!!!!')
+print([f" {j.text}, время добавления {j.time_posted}, пользователь {j.user.username} , рейтинг {j.rating}" for j in Comment.objects.filter(post = best_post)])
+
+print('Cпасибо за внимание')
+
+
 
 
 
