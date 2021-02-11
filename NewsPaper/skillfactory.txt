@@ -48,5 +48,15 @@ post_1.like()
 post_2.dislike()
 post_3.like()
 comment_1.like()
+author_1.update_rating()
+author_2.update_rating()
+best = Author.objects.all().order_by('-rating')[0]
+best_post = Post.objects.all().order_by('-rating')[0]
+print(f'Лучший автор {best.user.username}, с рейтингом {best.rating}')
+print(f'Лучшая статья - {best_post.name} , автор - {best_post.author.user.username}, дата добавлнения - {best_post.time_posted} , c рейтингом {best_post.rating}')
+best_post.preview()
+
+
+
 
 
