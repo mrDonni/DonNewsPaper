@@ -22,7 +22,9 @@ text ='\n'
 '\n«Лео заработал все это, до последнего евро. Он не погубил нас. Даже наоборот. Это лучший игрок в истории.'
 '\nМы хотим, чтобы он всегда оставался с нами». Напоминаем: Месси откладывает решение о новом контракте с «Барсой»'
 '\nдо выборов президента клуба.')
+post_1.save()
 post_1.category.add(category_1)
+post_1.save()
 post_2 = Post.objects.create(type = 'PS', author = author_2 , name = 'Всем ХАНА' , text = 'В Германии Лошади научили хомячков курить ')
 post_2.category.add(category_2,category_4)
 post_3 = Post.objects.create( author = author_2 , name = '1 сентября' , text = 'Школа открылась ')
@@ -59,6 +61,13 @@ for j in Comment.objects.filter(post = best_post):
 
 print('!!!!!!!!!!!!Или как вариант!!!!!!!!!!!!')
 print([f" {j.text}, время добавления {j.time_posted}, пользователь {j.user.username} , рейтинг {j.rating}" for j in Comment.objects.filter(post = best_post)])
+
+post_2.get_type_display()
+post_1.get_type_display()
+post_3.get_type_display()
+
+for j in PostCategory.objects.filter(post = post_2):
+     print(j)
 
 print('Cпасибо за внимание')
 
