@@ -1,0 +1,49 @@
+<!--  наследуемся от шаблона default.html, который мы создавали ещё во времена flatpages -->
+{% extends 'flatpages/default.html' %}
+
+<!-- Название у нас будет proudcts -->
+{% block title %}
+Posts
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+    <h1>Все Новости</h1>
+    <hr>
+    {% if posts %} <!-- Выводим товары только если они есть с помощью тега if -->
+            <table>
+                <tr>
+                    <td>
+                        Заголовок
+                    </td>
+                    <td>
+                        Дата публикации
+                    </td>
+                    <td>
+                        Текст
+                    </td>
+                    <td>
+                        Рейтинг
+                    </td>
+                </tr>
+               {% for post in posts %}
+                    <tr>
+                        <td>
+                            {{post.name}}
+                        </td>
+                        <td>
+                            {{post.time_posted|date:'d M Y'}}
+                        </td>
+                        <td>
+                            {{post.text|truncatewords:20}}
+                        </td>
+                        <td>
+                            {{post.rating}}
+                        </td>
+                    </tr>
+                {%endfor%}
+            </table>
+    {% else %} <!-- Если товаров нет, то говорим что товаров нет ;) -->
+        <h2>Новостей нет!</h2>
+    {% endif %}
+{% endblock content %}
