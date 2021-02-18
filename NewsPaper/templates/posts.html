@@ -1,6 +1,6 @@
 <!--  наследуемся от шаблона default.html, который мы создавали ещё во времена flatpages -->
 {% extends 'flatpages/default.html' %}
-
+{% load custom_filters %}
 <!-- Название у нас будет proudcts -->
 {% block title %}
 Posts
@@ -11,6 +11,7 @@ Posts
     <h1>Все Новости</h1>
     <hr>
     {% if posts %} <!-- Выводим товары только если они есть с помощью тега if -->
+           <h3>Всего новостей = {{posts|length}}</h3>
             <table>
                 <tr>
                     <td>
@@ -29,13 +30,13 @@ Posts
                {% for post in posts %}
                     <tr>
                         <td>
-                            {{post.name}}
+                            {{post.name|strong_language}}
                         </td>
                         <td>
                             {{post.time_posted|date:'d M Y'}}
                         </td>
                         <td>
-                            {{post.text|truncatewords:20}}
+                            {{post.text|truncatewords:20|strong_language}}
                         </td>
                         <td>
                             {{post.rating}}

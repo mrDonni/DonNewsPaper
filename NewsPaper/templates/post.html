@@ -1,5 +1,6 @@
 <!--  наследуемся от шаблона default.html, который мы создавали ещё во времена flatpages -->
 {% extends 'flatpages/default.html' %}
+{% load custom_filters %}
 
 <!-- Название у нас будет  -->
 {% block title %}
@@ -8,11 +9,13 @@ Posts
 
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
-<h1>{{post.name}}</h1>
-<hr>
-<h4>{{post.time_posted|date:'d M Y'}}</h4>
-<hr>
-<h3>{{post.text}}</h3>
-<hr>
-<h4>Рейтинг равен ={{post.rating}}</h4>
+
+        <h1>{{post.name|strong_language}}</h1>
+        <hr>
+        <h4>{{post.time_posted|date:'d-M-Y H:i '}}</h4>
+        <hr>
+        <h3>{{post.text|strong_language}}</h3>
+        <hr>
+        <h4>Рейтинг равен ={{post.rating}}</h4>
+
 {% endblock content %}
