@@ -5,7 +5,7 @@ register = template.Library()  # если мы не зарегестрируем
 
 @register.filter(name = 'strong_language')
 def strong_language(value):
-    words = ['пиздец','Хуй','Жопа','Нигер']
+    words = ['Пиздец','Хуй','Жопа','Нигер']
     for x in words:
         x = str(x)
         if x.lower()  in str(value.lower()):

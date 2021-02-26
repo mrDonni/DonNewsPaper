@@ -1,0 +1,41 @@
+{% extends 'flatpages/default.html' %}
+{%load custom_filters%}
+{% block title %} Product list {% endblock title %}
+
+
+{% block content %}
+<h2>Вы действительно хотите удалить данную новость?</h2>
+ <table>
+                <tr>
+                    <td>
+                        Заголовок
+                    </td>
+                    <td>
+                        Дата публикации
+                    </td>
+                    <td>
+                        Текст
+                    </td>
+                    <td>
+                        Рейтинг
+                    </td>
+                </tr>
+                <tr>
+                        <td>
+                            {{post.name|strong_language}}
+                        </td>
+                        <td>
+                            {{post.time_posted|date:'d M Y'}}
+                        </td>
+                        <td>
+                            {{post.text|strong_language}}<!-- можно |truncatewords:20 -->
+                        </td>
+                        <td>
+                            {{post.rating}}
+                        </td>
+                </tr>
+ </table>
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock content %}

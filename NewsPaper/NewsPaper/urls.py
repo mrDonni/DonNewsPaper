@@ -21,3 +21,4 @@ urlpatterns = [
     path('pages/', include('django.contrib.flatpages.urls')),
     path('news/', include('base.urls'))
 ]
+#handler404 = 'base.views.handler404'
