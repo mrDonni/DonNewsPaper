@@ -9,7 +9,7 @@ urlpatterns = [
     path('add/',PostCreateView.as_view(),name='post_create'),
     path('<int:pk>/edit/',PostUpdateView.as_view(),name='post_update'),
     path('<int:pk>/delete/', PostDeleteView.as_view(),name="post_delete"),
-    path('userdata/<int:pk>', AccountView.as_view(), name = "user_data")
+    path('userdata/<int:pk>/', AccountView.as_view(), name = "user_data")
 
     # т.к. сам по себе это класс, то нам надо представить этот класс в виде view. Для этого вызываем метод as_view
 ]

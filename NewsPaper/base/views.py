@@ -92,11 +92,13 @@ class PostDeleteView(LoginRequiredMixin,DeleteView):
     success_url = '/news/'
 
 
-class AccountView(DetailView):
+class AccountView(LoginRequiredMixin,DetailView):
     model = User
 
     template_name = 'base.html'
-    context_object_name = 'post'
+    context_object_name = 'user'
+
+
 
 #def handler404(request, *args, **argv):
     #response = render('404.html', {},
