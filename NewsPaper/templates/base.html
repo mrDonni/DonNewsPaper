@@ -11,11 +11,14 @@
             <h3>{{user.email}}</h3>
         <div>{{user.groups.all}}</div>
         <div>{{user.social.all}}</div>
-                
+
 
 
 
         {% endblock %}
+                {% if is_not_author %}
+                    <button> <a href="/news/upgrade/"> Хочу Стать автором!</a> </button>
+                {% endif %}
             <link> <a href="/accounts/logout/"><u>Выйти</u></a></link>
     </body>
 </html>

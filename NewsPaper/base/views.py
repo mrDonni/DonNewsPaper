@@ -4,11 +4,14 @@ from django.template import RequestContext
 from django.core.paginator import Paginator
 # Create your views here.
 
-from django.views.generic import ListView, DetailView ,UpdateView, CreateView, DeleteView # импортируем класс получения деталей объекта
+from django.views.generic import TemplateView, ListView, DetailView ,UpdateView, CreateView, DeleteView # импортируем класс получения деталей объекта
 from .models import Post,Author,User
 from .filters import PostFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
 
 
 class PostList(ListView):
@@ -92,13 +95,25 @@ class PostDeleteView(LoginRequiredMixin,DeleteView):
     success_url = '/news/'
 
 
-class AccountView(LoginRequiredMixin,DetailView):
+class AccountView(LoginRequiredMixin,TemplateView):
     model = User
 
     template_name = 'base.html'
     context_object_name = 'user'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
+        return context
 
+
+@login_required
+def upgrade_me(request):
+    user = request.user
+    premium_group = Group.objects.get(name='authors')
+    if not request.user.groups.filter(name='authors').exists():
+        premium_group.user_set.add(user)
+    return redirect('/')
 
 #def handler404(request, *args, **argv):
     #response = render('404.html', {},
