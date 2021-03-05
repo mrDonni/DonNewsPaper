@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from allauth.account.forms import SignupForm
+from django.contrib.auth.models import Group
+
 
 class Author(models.Model):
     rating = models.IntegerField(default=0)
@@ -91,4 +94,11 @@ class Comment(models.Model):
         return self.rating
 
 
+class BasicSignupForm(SignupForm):
+
+    def save(self, request):
+        user = super(BasicSignupForm, self).save(request)
+        basic_group = Group.objects.get(name='basic')
+        basic_group.user_set.add(user)
+        return user
 

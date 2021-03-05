@@ -5,9 +5,11 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 from django.views.generic import ListView, DetailView ,UpdateView, CreateView, DeleteView # импортируем класс получения деталей объекта
-from .models import Post
+from .models import Post,Author,User
 from .filters import PostFilter
 from .forms import PostForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 class PostList(ListView):
     model = Post
@@ -60,19 +62,20 @@ class Posts(ListView):
         #return super().get(request, *args, **kwargs)
 
 
-class ProductDetailView(DetailView):
-    template_name = 'post.html'
-    queryset = Post.objects.all()
+#class ProductDetailView(DetailView):
+    #template_name = 'post.html'
+    #queryset = Post.objects.all()
 
 
 # дженерик для создания объекта. Надо указать только имя шаблона и класс формы который мы написали в прошлом юните. Остальное он сделает за вас
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin,CreateView):
     template_name = 'post_edition/post_create.html'
     form_class = PostForm
 
 
 # дженерик для редактирования объекта
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin,UpdateView):
+    #login_url = 'accounts/login/'
     template_name = 'post_edition/post_create.html'
     form_class = PostForm
 
@@ -83,10 +86,18 @@ class PostUpdateView(UpdateView):
 
 
 # дженерик для удаления товара
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin,DeleteView):
     template_name = 'post_edition/post_delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
+
+
+class AccountView(DetailView):
+    model = User
+
+    template_name = 'base.html'
+    context_object_name = 'post'
+
 #def handler404(request, *args, **argv):
     #response = render('404.html', {},
                                   #context_instance=RequestContext(request))

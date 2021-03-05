@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title> Пользователь</title>
+    </head>
+    <body>
+        <div>
+            <h1><a href="/">Simple SignUp/SignIn app</a></h1>
+        </div>
+        {% block content %}
+        <h2>Страница авторизованного пользователя {{request.user.username}}</h2>
+        <div> {{request.user.email}} </div>
+        {% endblock %}
+    </body>
+</html>
