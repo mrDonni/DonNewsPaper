@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 
 from django.views.generic import TemplateView, ListView, DetailView ,UpdateView, CreateView, DeleteView # импортируем класс получения деталей объекта
 from .models import Post,Author,User
-from .filters import PostFilter
+from .filters import PostFilter, CategoryFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import redirect
@@ -39,6 +39,20 @@ class SearchPosts(ListView):
         context['filter'] = PostFilter(self.request.GET,
                                           queryset=self.get_queryset())  # вписываем наш фильтр в контекст
         return context
+
+class SearchCategories(ListView):
+    model = Post
+    template_name = 'categories.html'
+    context_object_name = 'posts'
+    ordering = ['-time_posted']
+
+    def get_context_data(self,
+                         **kwargs):  # забираем отфильтрованные объекты переопределяя метод get_context_data у наследуемого класса (привет полиморфизм, мы скучали!!!)
+        context = super().get_context_data(**kwargs)
+        context['filter'] = CategoryFilter(self.request.GET,
+                                          queryset=self.get_queryset())  # вписываем наш фильтр в контекст
+        return context
+
 class Posts(ListView):
     model = Post
     template_name = 'posts.html'

@@ -11,3 +11,10 @@ class PostFilter(FilterSet):
             'time_posted': ['date__gt'],
             'author__user': ['exact']
         }
+class CategoryFilter(FilterSet):
+    class Meta:
+        model = Post
+        fields = {
+            'category' :['exact']
+
+        }
