@@ -8,7 +8,7 @@ from django.views.generic import TemplateView, ListView, DetailView ,UpdateView,
 from .models import Post,Author,User
 from .filters import PostFilter
 from .forms import PostForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
@@ -56,29 +56,17 @@ class Posts(ListView):
         context['form'] = PostForm()
         return context
 
-    #def post(self, request, *args, **kwargs):
-        #form = self.form_class(request.POST)  # создаём новую форму, забиваем в неё данные из POST запроса
-
-        #if form.is_valid():  # если пользователь ввёл всё правильно и нигде не накосячил то сохраняем новый товар
-            #form.save()
-
-        #return super().get(request, *args, **kwargs)
-
-
-#class ProductDetailView(DetailView):
-    #template_name = 'post.html'
-    #queryset = Post.objects.all()
-
 
 # дженерик для создания объекта. Надо указать только имя шаблона и класс формы который мы написали в прошлом юните. Остальное он сделает за вас
-class PostCreateView(LoginRequiredMixin,CreateView):
+class PostCreateView(PermissionRequiredMixin,CreateView):
+    permission_required = ('base.add_post')
     template_name = 'post_edition/post_create.html'
     form_class = PostForm
 
-
 # дженерик для редактирования объекта
-class PostUpdateView(LoginRequiredMixin,UpdateView):
+class PostUpdateView(PermissionRequiredMixin,UpdateView):
     #login_url = 'accounts/login/'
+    permission_required = ('base.change_post')
     template_name = 'post_edition/post_create.html'
     form_class = PostForm
 
@@ -89,7 +77,8 @@ class PostUpdateView(LoginRequiredMixin,UpdateView):
 
 
 # дженерик для удаления товара
-class PostDeleteView(LoginRequiredMixin,DeleteView):
+class PostDeleteView(PermissionRequiredMixin,DeleteView):
+    permission_required = ('base.delete_post')
     template_name = 'post_edition/post_delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
@@ -113,6 +102,7 @@ def upgrade_me(request):
     premium_group = Group.objects.get(name='authors')
     if not request.user.groups.filter(name='authors').exists():
         premium_group.user_set.add(user)
+        Author.objects.create(user = user)
     return redirect('/')
 
 #def handler404(request, *args, **argv):
