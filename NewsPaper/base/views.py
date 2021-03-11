@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 from django.views.generic import TemplateView, ListView, DetailView ,UpdateView, CreateView, DeleteView # импортируем класс получения деталей объекта
-from .models import Post,Author,User
+from .models import Post,Author,User,Category
 from .filters import PostFilter, CategoryFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -118,6 +118,12 @@ def upgrade_me(request):
         premium_group.user_set.add(user)
         Author.objects.create(user = user)
     return redirect('/')
+
+@login_required
+def subscribe(request):
+    user = request.user
+    category = Category.objects.get('id')
+
 
 #def handler404(request, *args, **argv):
     #response = render('404.html', {},
