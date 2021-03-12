@@ -2,7 +2,7 @@
 
 
 #Команды в shell
-from base.models import Author, User
+from base.models import Author, User, CategorySubscriber
 user_1 = User.objects.create_user(username = 'Сергей')
 user_2 = User.objects.create_user(username = ' Роман')
 author_1 = Author.objects.create(user = user_1)
@@ -71,9 +71,19 @@ for j in PostCategory.objects.filter(post = post_2):
 
 print('Cпасибо за внимание')
 
-
-
-
-
-
+category_1.subscriber.add(user_1)
+category_1.subscriber
+print(category_1.subscriber)
+CategorySubscriber.objects.all()
+sf = category_1.subscriber
+sf
+print(sf)
+print(sf.type)
+print(sf.str)
+dl = PostCategory.objects.get(id =1 )
+dl
+print(dl)
+ss = CategorySubscriber.objects.get(id = 1)
+ss
+print(ss)
 

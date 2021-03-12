@@ -42,7 +42,7 @@ class SearchPosts(ListView):
 
 class SearchCategories(ListView):
     model = Post
-    template_name = 'categories.html'
+    template_name = 'categories/categories.html'
     context_object_name = 'posts'
     ordering = ['-time_posted']
 
@@ -122,7 +122,9 @@ def upgrade_me(request):
 @login_required
 def subscribe(request):
     user = request.user
-    category = Category.objects.get('id')
+    category = Category.objects.get(id = request)
+    if user not in category.objects.filter():
+        return
 
 
 #def handler404(request, *args, **argv):
