@@ -1,10 +1,5 @@
-<!--  наследуемся от шаблона default.html, который мы создавали ещё во времена flatpages -->
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
-<!-- Название у нас будет proudcts -->
-{% block title %}
-Categories, Posts
-{% endblock title %}
 
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
@@ -29,23 +24,18 @@ Categories, Posts
                              <a> {{category.name|title|strong_language }}</a>
                         </td>
                         <td>
-                        {% if not_subscriber %}
-                         <form  method="POST">
-                             {% csrf_token %}
-                         <button type = 'submit'  name ='subscribe' value="{{ category.id}}">Подписаться</button>
-                         </form>
-                        {% else %}
-                         Вы подписаны на эту категорию
-                        {% endif %}
-                        </td>
-                    </tr>
 
+
+                            <a href="{% url 'subscribe' %}">Подписаться на {{ category }}</a> <br>
+
+        </td>
+                    </tr>
                 {%endfor%}
             </table>
     {% else %} <!-- Если товаров нет, то говорим что товаров нет ;) -->
         <h2>Категорий нет!</h2>
     {% endif %}
-{% endblock content%}
+
 {% if is_paginated %}
 
     <!-- Если доступна предыдущая страница, то даём ссылку на неё и самую первую страницу -->
@@ -62,4 +52,12 @@ Categories, Posts
             <a href="?page={{ num }}">{{ num }}</a>
         {% endif %}
     {% endfor %}
+
+    <!-- Если есть следующая страница, то даём ссылку на неё и на самую последнюю страницу -->
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">>>></a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% endif %}
+
 {% endif %}
+{% endblock content %}

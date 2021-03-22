@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Post
+from .models import Post,Category
 
 
 # Создаём модельную форму
@@ -14,3 +14,8 @@ class CreatePostForm(ModelForm):
     class Meta:
         model = Post
         fields = ['name', 'type',  'category','text']
+
+class CategoryForm(ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', 'subscriber']

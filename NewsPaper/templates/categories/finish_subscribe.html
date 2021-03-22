@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title> Пользователь</title>
+    </head>
+    <body>
+                <link> <a href="/home/"><u>На главную</u></a></link>
+
+            {% block content %}
+        <h2>Страница подписки  {{user.username}} </h2>
+            <h3>{{user.email}}</h3>
+        <div>{{user.groups.all}}</div>
+        <div>{{user.social.all}}</div>
+
+                Вы успешно подписались
+        <!--<div>{{category.subscribers.self}}</div>>-->
+
+
+
+        {% endblock %}
+
+
+    </body>
+</html>

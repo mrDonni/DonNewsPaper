@@ -11,7 +11,9 @@ urlpatterns = [
     path('<int:pk>/delete/', PostDeleteView.as_view(),name="post_delete"),
     path('userdata/', AccountView.as_view(), name = "user_data"),
     path('upgrade/', upgrade_me, name = 'upgrade'),
-    path('category/', SearchCategories.as_view()),
+    path('category/', CategoriesList.as_view()),
+    path('subscribe', CategoryAdd.as_view(), name = 'subscribe'),
+    path('category/<int:pk>/finish_subscribe/', subscribe, name = 'finish_subscribe'),
     # т.к. сам по себе это класс, то нам надо представить этот класс в виде view. Для этого вызываем метод as_view
 ]
 #handler404 = 'base.views.handler404'
