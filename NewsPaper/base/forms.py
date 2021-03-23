@@ -1,3 +1,4 @@
+from django import forms
 from django.forms import ModelForm
 from .models import Post,Category
 
@@ -19,3 +20,17 @@ class CategoryForm(ModelForm):
     class Meta:
         model = Category
         fields = ['name','subscriber']
+
+class ContactForm(forms.Form):
+	subject = forms.CharField(max_length=100)
+	message = forms.CharField(widget=forms.Textarea)
+	sender = forms.EmailField()
+	cc_myself = forms.BooleanField(required=False)
+
+class PersonForm(forms.Form):
+	first_name = forms.CharField()
+
+class ContactFormPWithPriority(ContactForm, PersonForm):
+	priority = forms.CharField()
+	cc_myself = None
+	# prefix = 'person'

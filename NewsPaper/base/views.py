@@ -13,7 +13,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail, EmailMultiAlternatives
-
+from datetime import datetime
 
 class PostList(ListView):
     model = Post
@@ -63,6 +63,33 @@ class CategoriesList(ListView):
 
             Category.objects.get(pk=id).subscriber.add(user)
         return redirect('/')
+
+class CategoryList(ListView):
+    model = Post
+    template_name = 'test.html'
+    context_object_name = 'products'
+    queryset = Post.objects.order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['time_now'] = datetime.utcnow()
+        context['value1'] = None
+        context['is_not_premium'] = not self.request.user.groups.filter(name='authors').exists()
+        context['category'] = Category.objects.all()
+            # context['categoryid'] = Category.objects.get(id=self.kwargs['category'])
+        print(context['is_not_premium'], '--------')
+        cat = Category.objects.get(id=self.kwargs['category'])  # получаем категорию
+        myuser = self.request.user
+        q = cat.subscribers.all()
+        if myuser in q:
+            context['categoryidbed'] = Category.objects.get(id=self.kwargs['category'])
+        else:
+            context['categoryid'] = Category.objects.get(id=self.kwargs['category'])
+        return context
+
+    #def get_queryset(self):
+        #return Post.objects.filter(category=self.kwargs['category'])
+
     #def get(self, request, *args, **kwargs):
         #return render(request, 'categories/categories.html', {})
 
@@ -195,9 +222,9 @@ def upgrade_me(request):
     return redirect('/')
 
 @login_required
-def subscribe(request):
+def subscribe(request,category):
     user = request.user
-    category = Category.objects.get(id= request.GET)
+    category = Category.objects.get(id= category)
     category.subscriber.add(user)
     return redirect('/')
 
@@ -214,19 +241,19 @@ class Subscribe(LoginRequiredMixin, CreateView):
         Category.objects.get(pk=id).subscribers.add(user)
         return redirect('/')
 
-class CategoryAdd(CreateView):
-    template_name = 'categories/subscribe.html'
-    model = Category
-    ordering_by = ['']
-    context_object_name = 'categories'
-    queryset = Category.objects.all()
-    form_class = CategoryForm
+#class CategoryAdd(CreateView):
+   # template_name = 'categories/subscribe.html'
+  #  model = Category
+  #  ordering_by = ['']
+  #  context_object_name = 'categories'
+  #  queryset = Category.objects.all()
+   # form_class = CategoryForm
 
-    def post(self, request, *args, **kwargs):
-        user = self.request.user
-        id = self.kwargs.get('pk')
-        Category.objects.get(pk=id).subscribers.add(user)
-        return redirect('/')
+  #  def post(self, request, *args, **kwargs):
+     #   user = self.request.user
+     #   id = self.kwargs.get('pk')
+    #    Category.objects.get(pk=id).subscribers.add(user)
+     #   return redirect('/')
 #def handler404(request, *args, **argv):
     #response = render('404.html', {},
                                   #context_instance=RequestContext(request))
