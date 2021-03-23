@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail, EmailMultiAlternatives
 
 
 class PostList(ListView):
@@ -100,6 +101,45 @@ class PostCreateView(PermissionRequiredMixin,CreateView):
     template_name = 'post_edition/post_create.html'
     form_class = PostForm
 
+    def post(self, request, *args, **kwargs):
+        category = request.POST['category']
+        author = request.POST['author']
+        client_text = request.POST['text']
+        print(category, '-номер категории-')
+        cat = Category.objects.get(pk=category)
+        print(cat.subscribers.all(), 'участники категории')
+        users = cat.subscribers.all()
+        # post = Post(author=Author.objects.get(id=1), choice=request.POST['choice'], category=request.POST['category'],
+        #             title=request.POST['title'], content=request.POST['content'], )
+
+        for user in users:
+            print(user.email)
+            if user.email:
+                print(f'нашли юзера, отправляем ему на емаил. {user.email}')
+
+                # html_content = render_to_string(
+                #     'post_created.html', {'post': post, 'user':user}
+                # )
+                # msg = EmailMultiAlternatives(
+                #     subject=f'{user.email}',
+                #     body=f'{client_text[:50]}',
+                #     from_email='donnewspaper@mail.ru',
+                #     to=[user.email, ],
+                # )
+                # msg.attach_alternative(html_content, "text/html")
+                # msg.send() #отправка
+
+                send_mail(
+                    subject=f'{user.email}',
+                    message=f'{client_text[:50]} - новая запись - ссылка на статью ',
+                    from_email='Donnewspaper@mail.ru',
+                    recipient_list=[user.email, ],
+                )
+
+                print('---------------------')
+                print(user.email)
+                print(client_text[:50])
+        return redirect('head')
 # дженерик для редактирования объекта
 class PostUpdateView(PermissionRequiredMixin,UpdateView):
     #login_url = 'accounts/login/'

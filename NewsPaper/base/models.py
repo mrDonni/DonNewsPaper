@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from allauth.account.forms import SignupForm
 from django.contrib.auth.models import Group
-
+from django.urls import reverse
 
 class Author(models.Model):
     rating = models.IntegerField(default=0)
@@ -25,17 +25,25 @@ class Author(models.Model):
 class Category(models.Model):
 
     name = models.CharField(max_length=255, unique=True)
-    subscriber = models.ManyToManyField(User, through='CategorySubscriber',related_name='subscribers')
+    subscriber = models.ManyToManyField(User, verbose_name='subscribers',blank= True,null = True)
 
     def __str__(self):
         return self.name
 
-class CategorySubscriber(models.Model):
-    category = models.ForeignKey(Category, null= True,on_delete=models.SET_NULL)
-    user = models.ForeignKey(User, null= True, on_delete=models.SET_NULL)
+    def get_absolute_url(self):
+        return reverse('category', kwargs={'category': self.pk})
 
-    def __str__(self):
-        return f'{self.user.username} подписчик категории  {self.category.name}'
+    def subscribe(self):
+        return reverse('subscribe', kwargs={'category': self.pk})
+
+    def subscribed(self):
+        return reverse('subscribed', kwargs={'category': self.pk})
+#class CategorySubscriber(models.Model):
+    #category = models.ForeignKey(Category, null= True,on_delete=models.SET_NULL)
+    #user = models.ForeignKey(User, null= True, on_delete=models.SET_NULL)
+
+    #def __str__(self):
+        #return f'{self.user.username} подписчик категории  {self.category.name}'
 
 
 class Post(models.Model):

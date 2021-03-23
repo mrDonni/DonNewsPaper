@@ -6,4 +6,4 @@ from .models import *
 admin.site.register(Post)
 admin.site.register(Category)
 admin.site.register(PostCategory)
-admin.site.register(CategorySubscriber)
+#admin.site.register(CategorySubscriber)
