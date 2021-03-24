@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form  method="POST">
+                             {% csrf_token %}
+                             {% if not_subscriber %}
+                         <button type = 'submit'  name ='subscribe' value="{{ category.id}}">Подписаться</button>
+                         </form>
+                        {% else %}
+                         Вы подписаны на эту категорию
+                        {% endif %}
+                        </td>
+</body>
+</html>

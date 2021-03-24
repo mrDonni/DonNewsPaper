@@ -29,9 +29,10 @@ Categories, Posts
                              <a> {{category.name|title|strong_language }}</a>
                         </td>
                         <td>
-                        {% if not_subscriber %}
+
                          <form  method="POST">
                              {% csrf_token %}
+                             {% if not_subscriber %}
                          <button type = 'submit'  name ='subscribe' value="{{ category.id}}">Подписаться</button>
                          </form>
                         {% else %}

@@ -49,9 +49,10 @@ class CategoriesList(ListView):
     paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        not_subscribed = False
-        if (Category.objects.filter(subscriber = self.request.user.id).exists()):
-            not_subscribed = True
+        not_subscribed = True
+
+        if (Category.objects.filter(subscriber = self.request.user).exists()):
+            not_subscribed = False
         context['not_subscriber'] = not_subscribed
         return context
 
@@ -63,7 +64,26 @@ class CategoriesList(ListView):
 
             Category.objects.get(pk=id).subscriber.add(user)
         return redirect('/')
+class Categorie(TemplateView):
+    model = Category
+    template_name = 'categories/categorie.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        not_subscribed = True
 
+        if (Category.objects.filter(subscriber = self.request.user).exists()):
+            not_subscribed = False
+        context['not_subscriber'] = not_subscribed
+        return context
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        cat = get_object_or_404(Category, id = request.POST.get('category_id'))
+        id= cat.id
+        if "subscribe" in self.request.POST.keys():
+
+            Category.objects.get(pk=id).subscriber.add(user)
+        return redirect('/')
 class CategoryList(ListView):
     model = Post
     template_name = 'test.html'
@@ -134,8 +154,8 @@ class PostCreateView(PermissionRequiredMixin,CreateView):
         client_text = request.POST['text']
         print(category, '-номер категории-')
         cat = Category.objects.get(pk=category)
-        print(cat.subscribers.all(), 'участники категории')
-        users = cat.subscribers.all()
+        print(cat.subscriber.all(), 'участники категории')
+        users = cat.subscriber.all()
         # post = Post(author=Author.objects.get(id=1), choice=request.POST['choice'], category=request.POST['category'],
         #             title=request.POST['title'], content=request.POST['content'], )
 
@@ -150,7 +170,7 @@ class PostCreateView(PermissionRequiredMixin,CreateView):
                 # msg = EmailMultiAlternatives(
                 #     subject=f'{user.email}',
                 #     body=f'{client_text[:50]}',
-                #     from_email='donnewspaper@mail.ru',
+                #     from_email='donnewspaper@yandex.ru',
                 #     to=[user.email, ],
                 # )
                 # msg.attach_alternative(html_content, "text/html")
@@ -159,7 +179,7 @@ class PostCreateView(PermissionRequiredMixin,CreateView):
                 send_mail(
                     subject=f'{user.email}',
                     message=f'{client_text[:50]} - новая запись - ссылка на статью ',
-                    from_email='Donnewspaper@mail.ru',
+                    from_email='Donnewspaper@yandex.ru',
                     recipient_list=[user.email, ],
                 )
 

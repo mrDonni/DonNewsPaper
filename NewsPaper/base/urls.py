@@ -14,7 +14,8 @@ urlpatterns = [
     path('category/', CategoriesList.as_view()),
     path('subscribe/<int:category>/', subscribe, name = 'subscribe'),
     path('category/<int:pk>/finish_subscribe/', subscribe, name = 'finish_subscribe'),
-    path('test/', CategoryList.as_view())
+    path('test/', CategoryList.as_view()),
+    path('category/<int:pk>',Categorie.as_view())
     # т.к. сам по себе это класс, то нам надо представить этот класс в виде view. Для этого вызываем метод as_view
 ]
 #handler404 = 'base.views.handler404'

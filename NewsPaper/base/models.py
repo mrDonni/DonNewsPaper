@@ -25,7 +25,7 @@ class Author(models.Model):
 class Category(models.Model):
 
     name = models.CharField(max_length=255, unique=True)
-    subscriber = models.ManyToManyField(User, verbose_name='subscribers',blank= True,null = True)
+    subscriber = models.ManyToManyField(User,blank= True, related_name ='subscriber',editable= True, through='CategorySubscriber' )
 
     def __str__(self):
         return self.name
@@ -38,12 +38,12 @@ class Category(models.Model):
 
     def subscribed(self):
         return reverse('subscribed', kwargs={'category': self.pk})
-#class CategorySubscriber(models.Model):
-    #category = models.ForeignKey(Category, null= True,on_delete=models.SET_NULL)
-    #user = models.ForeignKey(User, null= True, on_delete=models.SET_NULL)
+class CategorySubscriber(models.Model):
+    category = models.ForeignKey(Category, null= True,on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, null= True, on_delete=models.SET_NULL)
 
-    #def __str__(self):
-        #return f'{self.user.username} подписчик категории  {self.category.name}'
+    def __str__(self):
+        return f'{self.user.username} подписчик категории  {self.category.name}'
 
 
 class Post(models.Model):

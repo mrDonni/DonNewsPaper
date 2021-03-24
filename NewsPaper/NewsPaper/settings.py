@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     # ... include the providers you want to enable:
     'allauth.socialaccount.providers.google',
-    #'django_apscheduler',
+    'django_apscheduler',
 
 ]
 
@@ -161,14 +161,14 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 ACCOUNT_FORMS = {'signup': 'base.models.BasicSignupForm'}
 
-EMAIL_HOST = 'smtp.mail.ru' # адрес сервера Яндекс-почты для всех один и тот же
+EMAIL_HOST = 'smtp.yandex.ru' # адрес сервера Яндекс-почты для всех один и тот же
 EMAIL_PORT = 465 # порт smtp сервера тоже одинаковый
-EMAIL_HOST_USER = 'donnewspaper@mail.ru' # ваше имя пользователя, например если ваша почта user@yandex.ru, то сюда надо писать user, иными словами, это всё то что идёт до собаки
-EMAIL_HOST_PASSWORD = 'Qwer1234`' # пароль от почты
+EMAIL_HOST_USER = 'donnewspaper' # ваше имя пользователя, например если ваша почта user@yandex.ru, то сюда надо писать user, иными словами, это всё то что идёт до собаки
+EMAIL_HOST_PASSWORD = 'Qwer12345`' # пароль от почты
 EMAIL_USE_SSL = True # Яндекс использует ssl, подробнее о том, что это, почитайте на Википедии, но включать его здесь обязательно
-SERVER_EMAIL = 'donnewspaper@mail.ru'
+SERVER_EMAIL = 'donnewspaper@yandex.ru'
 
-DEFAULT_FROM_EMAIL = 'donnewspaper@mail.ru'
+DEFAULT_FROM_EMAIL = 'donnewspaper@yandex.ru'
 # формат даты, которую будет воспрнимать наш задачник(вспоминаем урок по фильтрам)
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 
